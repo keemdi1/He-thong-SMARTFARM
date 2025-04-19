@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Hệ thống Smartfarm IoT</title>
+  <link rel="stylesheet" href="kieu.css" />
+</head>
+
+<body>
+  <header>
+    <h1>🌿 Hệ Thống Giám Sát Nông Trại IoT</h1>
+    <p>Quản lý - Điều khiển - Quan sát từ xa</p>
+  </header>
+
+  <nav>
+    <button class="tab-btn active" data-tab="status">Trạng thái thiết bị</button>
+    <button class="tab-btn" data-tab="control">Điều khiển thiết bị</button>
+    <button class="tab-btn" data-tab="nursery">Cây giống</button>
+    <button class="tab-btn" data-tab="other">Chức năng khác</button>
+  </nav>
+
+  <!-- TAB 1: Trạng thái thiết bị -->
+  <div id="status" class="tab-content active">
+    <div class="card">
+      <h2>Thiết bị đang hoạt động</h2>
+      <div class="status-box">
+        <div><img src="img/pumpbg.png" alt="Bơm"> Bơm: <span id="status-pump">--</span></div>
+        <div><img src="img/mistbg.png" alt="Phun sương"> Phun sương: <span id="status-mist">--</span></div>
+        <div><img src="img/valvebg.png" alt="Van xả"> Van xả: <span id="status-valve">--</span></div>
+        <div><img src="img/denbg.png" alt="Đèn"> Đèn: <span id="status-light">--</span></div>
+        <div><img src="img/fanbg.png" alt="Quạt"> Quạt: <span id="status-fan">--</span></div>
+      </div>
+      
+      <p style="margin-top:30px; text-align: center; font-size: 19px;">
+        🌡️ Nhiệt độ: <strong id="nhietdo-value">-- °C</strong>
+        &nbsp;&nbsp;&nbsp;&nbsp; 💦 Độ ẩm không khí: <strong id="doam-value">-- %</strong>
+        &nbsp;&nbsp;&nbsp;&nbsp; 🔅 Ánh sáng: <strong id="anhsang-value">-- lux</strong>
+        &nbsp;&nbsp;&nbsp;&nbsp; 💦 Độ ẩm đất: <strong id="doamdat-value">-- %</strong>
+      </p>
+    </div>
+    <!-- Popup cảnh báo AUTO -->
+    <div id="autoPopup" class="auto-popup hidden">
+      <div class="popup-content">
+        <p>⚠️ Lưu ý: Chế độ AUTO đang hoạt động</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: Điều khiển thiết bị -->
+  <div id="control" class="tab-content">
+    <div class="card">
+      <h2>Điều khiển thiết bị</h2>
+      
+      <div class="control-box">
+        <div class="device-control">
+
+          <!-- <button onclick="toggleDevice(this)">💧 Bơm: TẮT</button> -->
+          <img id="pum" src="img/pump.png" alt="Bơm"/>
+          <h3>Bơm</h3>
+          <div class="btn-group">
+            <button id="btn1">Bật</button>
+            <button id="btn2">Tắt</button>
+          </div>
+        </div>
+        <!-- <button onclick="toggleDevice(this)">☁️ Phun sương: TẮT</button> -->
+          <div class="device-control">
+            <img id="mist" src="img/mist.png" alt="Phun sương"/>
+            <h3>Phun sương</h3>
+            <div class="btn-group">
+              <button id="btn3">Bật</button>
+              <button id="btn4">Tắt</button>
+            </div>
+          </div>
+          <!-- <button onclick="toggleDevice(this)">💨 Van xả: TẮT</button> -->
+          <div class="device-control">
+            <img id="valve" src="img/valve.png" alt="Van xả"/>
+            <h3>Van xả</h3>
+            <div class="btn-group">
+              <button id="btn5">Bật</button>
+              <button id="btn6">Tắt</button>
+            </div>
+          </div>
+          <!-- <button onclick="toggleDevice(this)">💡 Đèn: TẮT</button> -->
+          <div class="device-control">
+            <img id="light" src="img/den.png" alt="Đèn"/>
+            <h3>Đèn</h3>
+            <div class="btn-group">
+              <button id="btn7">Bật</button>
+              <button id="btn8">Tắt</button>
+            </div>
+          </div>
+        <!-- <button onclick="toggleDevice(this)">💨 Quạt: TẮT</button> -->
+        <div class="device-control">
+          <img id="fan" src="img/fan.png" alt="Quạt"/>
+          <h3>Quạt</h3>
+          <div class="btn-group">
+            <button id="btn9">Bật</button>
+            <button id="btn10">Tắt</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="control-box">
+        <!-- Nút AUTO -->
+        <div class="card" style="margin-top: 30px;">
+          <div class="auto-row">
+            <h2 style="display:inline">AUTO:</h2>
+            <button id="autoBtn">OFF</button>
+            <button id="attrBtn">?</button>
+          </div>
+          <span id="info">
+            👉Khi bạn bật chế độ AUTO, hệ thống sẽ thu thập thông tin từ dữ liệu cảm biến và 
+            tự động điều khiển các thiết bị cho phù hợp với môi trường
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: Trang nuôi trồng cây giống -->
+  <div id="nursery" class="tab-content">
+    <div class="card">
+      <h2>Các loại cây giống</h2>
+      <div class="plant-image">
+        <img src="https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2" alt="Cây giống" />
+      </div>
+      <p style="margin-top:10px">📸 Hình ảnh cập nhật lúc <span id="timestamp">12:00 19/04/2025</span></p>
+    </div>
+  </div>
+
+  <!-- TAB 4: Chức năng khác -->
+  <div id="other" class="tab-content">
+    <div class="card">
+      <h2>Chức năng bổ sung (đang phát triển)</h2>
+      <p>Hiện hệ thống đang phát triển thêm...</p>
+    </div>
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab-btn');
+    const contents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabs.forEach(b => b.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      });
+    });
+  </script>
+  <footer>
+    <p>© 2025 Smart Farm - QUÁCH VĂN KỲ 23661032 / LÊ VĂN NGUỒN 23661034</p>
+  </footer>
+  
+  <!-- Kết nối Firebase -->
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-database.js"></script>
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-analytics.js"></script>
+  
+  <script>
+    // Firebase cấu hình
+    var firebaseConfig = {
+      apiKey: "AIzaSyBaZgHe9UKU5Qe6FBgsW0VPmNHX028jzmU",
+      authDomain: "smartfam-9256d.firebaseapp.com",
+      databaseURL: "https://smartfam-9256d-default-rtdb.firebaseio.com",
+      projectId: "smartfam-9256d",
+      storageBucket: "smartfam-9256d.firebasestorage.app",
+      messagingSenderId: "1020077202687",
+      appId: "1:1020077202687:web:d27398e5fa0f1f609b00ca",
+      measurementId: "G-1LXSHL9HDZ"
+    };
+    // Khởi tạo Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    // Lấy phần tử DOM
+    var nhietdo = document.getElementById('nhietdo-value');
+    var doam = document.getElementById('doam-value');
+    var anhsang = document.getElementById('anhsang-value');
+    var doamdat = document.getElementById('doamdat-value');
+    // Đọc dữ liệu từ Firebase
+    var dbRef = firebase.database().ref().child('Nhietdo');  
+    var dbRef2 = firebase.database().ref('doam');
+    var dbRef3 = firebase.database().ref('anhsang');
+    var dbRef4 = firebase.database().ref('doamdat');
+    dbRef.on('value', snap => nhietdo.innerText = snap.val() + " °C");
+    dbRef2.on('value', snap => doam.innerText = snap.val() + " %");
+    dbRef3.on('value', snap => anhsang.innerText = snap.val()+ " lux");
+    dbRef4.on('value', snap => doamdat.innerText = snap.val() + " %"); 
+
+    //----- CẬP NHẬT TRẠNG THÁI THIẾT BỊ TỪ FIREBASE ------------------------------------
+    function updateUIFromFirebase(img, btnOn, btnOff, imgOnSrc, imgOffSrc, value) {
+    if (value === 1) {
+      img.src = imgOnSrc;
+      btnOn.classList.add('active-on');
+      btnOff.classList.remove('active-on', 'active-off');
+    } else {
+      img.src = imgOffSrc;
+      btnOff.classList.add('active-off');
+      btnOn.classList.remove('active-on', 'active-off');
+    }}
+
+    // ======== BƠM ========================
+    firebase.database().ref("thietbi1/bom").on('value', snapshot => {
+      const value = snapshot.val();
+      updateUIFromFirebase(imgpum, btn1, btn2, 'img/pumpon1.png', 'img/pump.png', value);
+    });
+
+    // ======== PHUN SƯƠNG ==================
+    firebase.database().ref("thietbi2/phun_suong").on('value', snapshot => {
+      const value = snapshot.val();
+      updateUIFromFirebase(imgmist, btn3, btn4, 'img/miston.png', 'img/mist.png', value);
+    });
+
+    // ======== VAN XẢ ======================
+    firebase.database().ref("thietbi3/van_xa").on('value', snapshot => {
+      const value = snapshot.val();
+      updateUIFromFirebase(imgvalve, btn5, btn6, 'img/valveon.png', 'img/valve.png', value);
+    });
+
+    // ======== ĐÈN =========================
+    firebase.database().ref("thietbi4/den").on('value', snapshot => {
+      const value = snapshot.val();
+      updateUIFromFirebase(imglight, btn7, btn8, 'img/denon.png', 'img/den.png', value);
+    });
+
+    // ======== QUẠT ========================
+    firebase.database().ref("thietbi5/quat").on('value', snapshot => {
+      const value = snapshot.val();
+      updateUIFromFirebase(imgfan, btn9, btn10, 'img/fanon.png', 'img/fan.png', value);
+    });
+
+    // ===============ĐỌC TRẠNG THÁI BẬT/ TẮT CÁC THIẾT BỊ===========================
+    
+    // DOM phần tử hiển thị trạng thái thiết bị
+    const statusPump = document.getElementById('status-pump');
+    const statusMist = document.getElementById('status-mist');
+    const statusValve = document.getElementById('status-valve');
+    const statusLight = document.getElementById('status-light');
+    const statusFan = document.getElementById('status-fan');
+
+    // Ghi nhận trạng thái các thiết bị từ Firebase và cập nhật giao diện
+    firebase.database().ref("thietbi1/bom").on('value', snapshot => {
+      const value = snapshot.val();
+      statusPump.innerText = value === 1 ? "BẬT" : "TẮT";
+    });
+
+    firebase.database().ref("thietbi2/phun_suong").on('value', snapshot => {
+      const value = snapshot.val();
+      statusMist.innerText = value === 1 ? "BẬT" : "TẮT";
+    });
+
+    firebase.database().ref("thietbi3/van_xa").on('value', snapshot => {
+      const value = snapshot.val();
+      statusValve.innerText = value === 1 ? "BẬT" : "TẮT";
+    });
+
+    firebase.database().ref("thietbi4/den").on('value', snapshot => {
+      const value = snapshot.val();
+      statusLight.innerText = value === 1 ? "BẬT" : "TẮT";
+    });
+
+    firebase.database().ref("thietbi5/quat").on('value', snapshot => {
+      const value = snapshot.val();
+      statusFan.innerText = value === 1 ? "BẬT" : "TẮT";
+    });
+
+    // ============ AUTO BUTTON ==============================
+    firebase.database().ref("autoBtn").on("value", (snapshot) => {
+      const value = snapshot.val();
+      if (value === 1) {
+        btn.classList.add("on");
+        btn.classList.remove("off");
+        btn.textContent = "ON";
+      } else {
+        btn.classList.remove("on");
+        btn.classList.add("off");
+        btn.textContent = "OFF";
+      }
+    });
+  </script>
+  <script src="function_02.js"></script>
+
+</body>
+</html>
