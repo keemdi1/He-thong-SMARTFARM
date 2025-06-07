@@ -1,0 +1,336 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f0f8f5;
+}
+
+header {
+    background-color: #2e7d32;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+  
+.logo {
+    width: 60px;
+    vertical-align: middle;
+    margin-left: -60px; /* Dịch logo qua trái */
+}
+
+footer {
+    margin: 30px auto 0 auto; /* Căn giữa phần tử và tạo khoảng cách trên */
+    width: fit-content; /* Hoặc một độ rộng cụ thể */
+    text-align: center;
+}
+  
+
+nav {
+    display: flex;
+    background: #a5d6a7;
+    justify-content: center;
+}
+
+nav button {
+    padding: 14px 24px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #2e7d32;
+}
+
+nav button.active {
+    border-bottom: 3px solid #2e7d32;
+    background: #dcedc8;
+}
+
+.tab-content {
+    display: none;
+    padding: 30px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.card {
+    position: relative;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.card img {
+    width: 40px;
+    height: auto;
+    object-fit: contain;
+}
+
+.status-box, .control-box {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center; /* Thêm dòng này để căn giữa các khối */
+}
+
+
+.status-box div {
+    background: #e8f5e9;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    border: 1px solid #c8e6c9;
+    cursor: pointer;
+    display: flex;
+    align-items: center; /* Căn giữa theo chiều dọc */
+    gap: 10px; /* Khoảng cách giữa ảnh và chữ */
+}
+
+.control-box button {
+    background: #e8f5e9;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    border: 1px solid #c8e6c9;
+    cursor: pointer;
+}
+  
+.btn-group button {
+    margin: 5px;
+    padding: 8px 18px;
+    font-size: 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    background-color: #ddd;
+    transition: background-color 0.3s;
+}
+
+.btn-group button:hover {
+    background-color: #ccc;
+}
+  
+.active-on {
+    background-color: limegreen !important;
+    color: white;
+}
+
+.active-off {
+    background-color: red !important;
+    color: white;
+}
+  
+.plant-image img {
+  width: 220px;
+  border-radius: 8px;
+}
+
+.image-button {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* Popup nền mờ */
+.pop {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+/* Nội dung popup */
+.pop-content {
+  background-color: #fff;
+  margin: 100px auto;
+  padding: 20px;
+  width: 60%;
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* Nút đóng */
+.close {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Các lựa chọn cây */
+ .plant-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+  }
+  .plant-item {
+    text-align: center;
+    cursor: pointer;
+    width: 120px;
+  }
+  .plant-item img {
+    width: 100%;
+    border-radius: 10px;
+  }
+  .plant-detail {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    align-items: flex-start;
+  }
+  .plant-detail img {
+    width: 180px;
+    border-radius: 10px;
+  }
+
+.plant-info {
+  /* ví dụ chỉnh khoảng cách, font, màu... */
+  margin-top: -20px;
+  font-size: 16px;
+}
+#plant-conditions ul {
+    margin-top: 10px;
+    padding-left: 30px;
+  }
+
+#plant-conditions li {
+    margin-bottom: 5px;
+  }
+.device-control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    width: 140px;
+    transition: transform 0.2s ease;
+}
+.device-control:hover {
+  transform: scale(1.1);
+}
+
+.device-control img {
+    width: 60px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.device-control h3 {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.device-control .btn-group {
+    display: flex;
+    gap: 10px;
+}
+
+/* auto button */
+#autoBtn {
+  width: 100px;
+  height: 50px;
+  font-size: 20px;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  background-color: red; /*  OFF mặc định */
+}
+#autoBtn.on {
+  background-color: green;
+}
+
+#attrBtn {
+  width: 20px;
+  height: 20px;
+  font-size: 18px;
+  border-radius: 50%;
+  background-color: white;
+  border: 1px solid black;
+  cursor: pointer;
+  display: flex;             /* Thêm để canh giữa nội dung */
+  justify-content: center;  /* Căn giữa ngang */
+  align-items: center;      /* Căn giữa dọc */
+  padding: 0;               /* Bỏ padding để tránh làm lệch nội dung */
+}
+
+#attrBtn:hover {
+  background-color: orange;
+}
+
+.auto-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#info {
+  display: none; /* Ban đầu ẩn thông tin */
+  position: absolute;
+  top: 50%;
+  left: 96%;
+  transform: translateY(-50%);
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  text-align: left;
+  color: darkblue;
+  max-width: 220px;
+  width: max-content;
+  word-break: break-word;
+  white-space: normal;
+  z-index: 10;
+}
+
+/* Khi có class 'show', sẽ hiển thị thông tin */
+#info.show {
+  display: block;
+}
+
+/* Hiển thị popup */
+.auto-popup {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fef3c7;
+  color: #92400e;
+  width: 320px;
+  height: 15px;
+  padding: 30px;
+  border: 2px solid #facc15;
+  border-radius: 10px;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-in-out;
+  font-weight: bold;
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}

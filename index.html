@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Hệ thống Smartfarm IoT</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header>
+    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+      <img src="img/logo.png" alt="Logo" class="logo">
+      <div>
+        <h1 style="font-size: 26px; margin: 0;">🌿 Hệ Thống Giám Sát Nông Trại IoT</h1>
+        <p style="margin: 0; margin: 10px auto 0 auto;">Quản lý - Điều khiển - Quan sát từ xa</p>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <button class="tab-btn active" data-tab="status">Trạng thái thiết bị</button>
+    <button class="tab-btn" data-tab="control">Điều khiển thiết bị</button>
+    <button class="tab-btn" data-tab="nursery">Cây giống</button>
+    <button class="tab-btn" data-tab="other">Chức năng khác</button>
+  </nav>
+
+  <!-- TAB 1: Trạng thái thiết bị -->
+  <div id="status" class="tab-content active">
+    <div class="card">
+      <h2>Thiết bị đang hoạt động</h2>
+      <div class="status-box">
+        <div><img src="img/pumpbg.png" alt="Bơm"> Bơm: <span id="status-pump">--</span></div>
+        <div><img src="img/mistbg.png" alt="Phun sương"> Phun sương: <span id="status-mist">--</span></div>
+        <div><img src="img/valvebg.png" alt="Van xả"> Van xả: <span id="status-valve">--</span></div>
+        <div><img src="img/denbg.png" alt="Đèn"> Đèn: <span id="status-light">--</span></div>
+        <div><img src="img/fanbg.png" alt="Quạt"> Quạt: <span id="status-fan">--</span></div>
+        <div><img src="img/valvebg2.png" alt="Van bơm"> Van Bơm: <span id="status-valve2">--</span></div>
+      </div>
+      
+      <p style="margin-top:30px; text-align: center; font-size: 19px;">
+        🌡️ Nhiệt độ: <strong id="nhietdo-value">-- °C</strong>
+        &nbsp;&nbsp;&nbsp;&nbsp; 💦 Độ ẩm không khí: <strong id="doam-value">-- %</strong>
+        &nbsp;&nbsp;&nbsp;&nbsp; 🔅 Ánh sáng: <strong id="anhsang-value">-- lux</strong>
+        &nbsp;&nbsp;&nbsp;&nbsp; 💦 Độ ẩm đất: <strong id="doamdat-value">-- %</strong>
+      </p>
+    </div>
+    <!-- Popup cảnh báo AUTO -->
+    <div id="autoPopup" class="auto-popup hidden">
+      <div class="popup-content">
+        <p>⚠️ Lưu ý: Chế độ AUTO đang hoạt động</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: Điều khiển thiết bị -->
+  <div id="control" class="tab-content">
+    <div class="card">
+      <h2>Điều khiển thiết bị</h2>
+      
+      <div class="control-box">
+        <div class="device-control">
+
+          <!-- <button onclick="toggleDevice(this)">💧 Bơm: TẮT</button> -->
+          <img id="pum" src="img/pump.png" alt="Bơm"/>
+          <h3>Bơm</h3>
+          <div class="btn-group">
+            <button id="btn1">Bật</button>
+            <button id="btn2">Tắt</button>
+          </div>
+        </div>
+        <!-- <button onclick="toggleDevice(this)">☁️ Phun sương: TẮT</button> -->
+          <div class="device-control">
+            <img id="mist" src="img/mist.png" alt="Phun sương"/>
+            <h3>Phun sương</h3>
+            <div class="btn-group">
+              <button id="btn3">Bật</button>
+              <button id="btn4">Tắt</button>
+            </div>
+          </div>
+          <!-- <button onclick="toggleDevice(this)">💨 Van xả: TẮT</button> -->
+          <div class="device-control">
+            <img id="valve" src="img/valve.png" alt="Van xả"/>
+            <h3>Van xả</h3>
+            <div class="btn-group">
+              <button id="btn5">Bật</button>
+              <button id="btn6">Tắt</button>
+            </div>
+          </div>
+          <!-- <button onclick="toggleDevice(this)">💡 Đèn: TẮT</button> -->
+          <div class="device-control">
+            <img id="light" src="img/den.png" alt="Đèn"/>
+            <h3>Đèn</h3>
+            <div class="btn-group">
+              <button id="btn7">Bật</button>
+              <button id="btn8">Tắt</button>
+            </div>
+          </div>
+        <!-- <button onclick="toggleDevice(this)">💨 Quạt: TẮT</button> -->
+        <div class="device-control">
+          <img id="fan" src="img/fan.png" alt="Quạt"/>
+          <h3>Quạt</h3>
+          <div class="btn-group">
+            <button id="btn9">Bật</button>
+            <button id="btn10">Tắt</button>
+          </div>
+        </div>
+
+        <!-- <button onclick="toggleDevice(this)">💨 valve2: TẮT</button> -->
+        <div class="device-control">
+          <img id="valve2" src="img/valve2.png" alt="Van bơm"/>
+          <h3>Van tưới</h3>
+          <div class="btn-group">
+            <button id="btn11">Bật</button>
+            <button id="btn12">Tắt</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="control-box">
+        <!-- Nút AUTO -->
+        <div class="card" style="margin-top: 30px;">
+          <div class="auto-row">
+            <h2 style="display:inline">AUTO:</h2>
+            <button id="autoBtn">OFF</button>
+            <button id="attrBtn">?</button>
+          </div>
+          <span id="info">
+            👉Khi bạn bật chế độ AUTO, hệ thống sẽ tự động điều khiển các thiết bị cho phù hợp với 
+            môi trường, đảm bảo cây trồng được chăm sóc đúng cách ngay cả khi bạn vắng mặt.
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+ <!-- -----------------TAB 3: Trang nuôi trồng cây giống ------------------------------------------------------->
+
+<!-- Cây giống chính -->
+  <div id="nursery" class="tab-content">
+    <div class="card">
+      <h2>Các loại cây giống:</h2>
+      <!-- Ảnh chính sẽ được đổi sau khi chọn -->
+      <div class="plant-detail">
+        <img id="mainImage" src="img/tree.png" alt="Cây giống" onclick="openPopup()" style="cursor: pointer;" />
+        <div class="plant-info">
+          <h2 id="plant-name">Tên cây</h2>
+          <p><strong>Thời gian thu hoạch:</strong> <span id="harvest-time">- -</span></p>
+          <p id="plant-description">Mô tả cây giống</p>
+          <div id="plant-conditions"></div>
+        </div>
+      </div>
+      <p style="margin-top:10px">📸 Hình ảnh cập nhật lúc <span id="timestamp">--:-- --/--/----</span></p>
+
+      <!-- Popup chọn cây -->
+      <div id="plantPopup" class="pop">
+        <div class="pop-content">
+          <span class="close" onclick="closePopup()">&times;</span>
+          <div class="plant-options">
+            <div class="plant-item" onclick="selectPlantByName('Cây cải thìa')">
+              <img src="img/thia.png" alt="Cây cải thìa">
+              <p>Cây cải thìa</p>
+            </div>
+            <div class="plant-item" onclick="selectPlantByName('Cây xà lách')">
+              <img src="img/xalach.png" alt="Cây xà lách">
+              <p>Cây xà lách</p>
+            </div>
+            <div class="plant-item" onclick="selectPlantByName('Cải bẹ xanh')">
+              <img src="img/bexanh.png" alt="Cải bẹ xanh">
+              <p>Cải bẹ xanh</p>
+            </div>
+            <div class="plant-item" onclick="selectPlantByName('Cây cải ngọt')">
+              <img src="img/ngot.png" alt="Cây cải ngọt">
+              <p>Cây cải ngọt</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="plant-detail" style="display: none;" class="plant-detail">
+        <img id="plant-detail-image" src="" alt="Ảnh cây giống">
+        <div class="plant-info">
+          <h2 id="plant-name">Tên cây</h2>
+          <p><strong>Thời gian thu hoạch:</strong> <span id="harvest-time">--</span></p>
+          <p id="plant-description">Mô tả cây giống</p>
+        </div>
+      </div>
+
+      <!-- Form nhập ngày gieo trồng và ngày thu hoạch -->
+      <h3>Chọn ngày gieo trồng và ngày thu hoạch</h3>
+      <form id="plant-form">
+        <label for="planting-date">Ngày gieo trồng:</label>
+        <input type="date" id="planting-date" required><br><br>
+        <label for="harvest-date">Ngày thu hoạch:</label>
+        <input type="date" id="harvest-date" required><br><br>
+        <button type="submit">Lưu thông tin</button>
+      </form>
+
+      <!-- Cảnh báo ngày thu hoạch -->
+      <div id="harvest-alert" style="display:none; color: yellow; font-size:24px; font-weight: bold; text-align:center; background-color: rgba(255, 0, 0, 0.7); padding: 10px; margin-top: 20px;">
+        <p>⚠️ Cảnh báo ⚠️: Ngày thu hoạch đã đến gần!</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openPopup() {
+      document.getElementById("plantPopup").style.display = "block";
+    }
+
+    function closePopup() {
+      document.getElementById("plantPopup").style.display = "none";
+    }
+
+    const plantData = {
+      "Cây cải thìa": {
+        image: "img/thia.png",
+        time: "28 - 35 ngày",
+        description: "Cải thìa là loại rau giàu dinh dưỡng, giàu vitamin A, C, K và chất xơ, tốt cho miễn dịch và tiêu hóa...",
+        conditions: `
+          <ul>
+            <li><strong>Nhiệt độ lý tưởng:</strong> 18°C – 24°C (Chịu được 13°C đến 28°C; nhiệt độ cao dễ gây hiện tượng ra hoa sớm)</li>
+            <li><strong>Độ ẩm đất:</strong> 60% – 75% </li>
+            <li><strong>Độ ẩm không khí:</strong> 50% – 70%</li>
+            <li><strong>Chiếu sáng:</strong> 6 – 8 giờ/ngày (ánh sáng tán xạ hoặc nắng nhẹ)</li>
+          </ul>
+        `
+      },
+
+      "Cây xà lách": {
+        image: "img/xalach.png",
+        time: "35 - 40 ngày",
+        description: "Xà lách là loại rau ăn sống phổ biến, giúp giảm viêm nhiễm, ngừa bệnh mãn tính, bảo vệ mắt, đặc biệt là võng mạc,...",
+        conditions: `
+          <ul>
+            <li><strong>Nhiệt độ lý tưởng:</strong> 18°C – 24°C (Chịu được 13°C đến 28°C)</li>
+            <li><strong>Độ ẩm đất:</strong> 65% – 75%</li>
+            <li><strong>Độ ẩm không khí:</strong> 50% – 70%</li>
+            <li><strong>Chiếu sáng:</strong> 4 – 6 giờ/ngày (Ưa nắng nhẹ)</li>
+          </ul>
+        `
+      },
+
+      "Cải bẹ xanh": {
+      image: "img/bexanh.png",
+      time: "30 - 45 ngày",
+      description: "Cải bẹ xanh giúp thanh nhiệt, mát gan, giảm nóng trong cơ thể, tốt cho hệ tiêu hóa, giàu vitamin...",
+      conditions: `
+        <ul>
+          <li><strong>Nhiệt độ lý tưởng:</strong> 22°C – 28°C (chấp nhận 20°C – 32°C)</li>
+          <li><strong>Độ ẩm đất:</strong> 65% – 80%</li>
+          <li><strong>Độ ẩm không khí:</strong> 70% – 85%</li>
+          <li><strong>Chiếu sáng:</strong> 4 – 6 giờ/ngày (ánh sáng tán xạ hoặc nắng nhẹ)</li>
+        </ul>
+      `
+      },
+
+      "Cây cải ngọt": {
+        image: "img/ngot.png",
+        time: "25 – 40 ngày",
+        description: "Cải ngọt là loại rau tốt cho người bị gout, bảo vệ gan, giàu canxi, ngăn ngừa loãng xương, phòng ngừa ung thư...",
+        conditions: `
+          <ul>
+            <li><strong>Nhiệt độ lý tưởng:</strong> 20°C – 28°C (chịu được 18°C – 32°C)</li>
+            <li><strong>Độ ẩm đất:</strong> 60% – 75%</li>
+            <li><strong>Độ ẩm không khí:</strong> 70% – 80%</li>
+            <li><strong>Chiếu sáng:</strong> 4 – 6 giờ/ngày (ánh sáng tán xạ hoặc nắng nhẹ)</li>
+          </ul>
+        `
+      }
+    };
+
+    function selectPlantByName(name) {
+      const plant = plantData[name];
+      if (!plant) return;
+
+      // Đổi ảnh chính
+      document.getElementById("mainImage").src = plant.image;
+
+      // Cập nhật thông tin
+      document.getElementById("plant-name").innerText = name;
+      document.getElementById("harvest-time").innerText = plant.time;
+      document.getElementById("plant-description").innerText = plant.description;
+
+      // Cập nhật điều kiện sinh trưởng nếu có
+      document.getElementById("plant-conditions").innerHTML = plant.conditions || "";
+
+      // Lưu vào localStorage
+      localStorage.setItem("selected-plant-name", name);
+      localStorage.setItem("selected-plant-image", plant.image);
+      localStorage.setItem("selected-plant-time", plant.time);
+      localStorage.setItem("selected-plant-description", plant.description);
+      localStorage.setItem("selected-plant-conditions", plant.conditions || "");
+
+
+      // Đóng popup
+      closePopup();
+    }
+  </script>
+
+  <script>
+    window.onload = function() {
+      
+      // Xử lý ngày gieo trồng và ngày thu hoạch
+      const plantForm = document.getElementById('plant-form');
+      const harvestAlert = document.getElementById('harvest-alert');
+      
+      // Cập nhật timestamp
+      const timestamp = document.getElementById('timestamp');
+      const now = new Date();
+      const formattedTime = now.toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit' }) + " " + now.toLocaleDateString('vi-VN');
+      timestamp.innerText = formattedTime;
+
+      // Lấy lại thông tin cây đã chọn từ localStorage nếu có
+      const savedPlantName = localStorage.getItem("selected-plant-name");
+      const savedPlantImage = localStorage.getItem("selected-plant-image");
+      const savedPlantTime = localStorage.getItem("selected-plant-time");
+      const savedPlantDescription = localStorage.getItem("selected-plant-description");
+
+      if (savedPlantName && savedPlantImage && savedPlantTime && savedPlantDescription) {
+        document.getElementById("mainImage").src = savedPlantImage;
+        document.getElementById("plant-name").innerText = savedPlantName;
+        document.getElementById("harvest-time").innerText = savedPlantTime;
+        document.getElementById("plant-description").innerText = savedPlantDescription;
+      }
+
+      const savedPlantConditions = localStorage.getItem("selected-plant-conditions");
+      if (savedPlantConditions) {
+        document.getElementById("plant-conditions").innerHTML = savedPlantConditions;
+      } else {
+        document.getElementById("plant-conditions").innerHTML = "";
+      }
+
+      // Kiểm tra nếu đã có ngày gieo trồng và thu hoạch được lưu trữ trong localStorage
+      const savedPlantingDate = localStorage.getItem('planting-date');
+      const savedHarvestDate = localStorage.getItem('harvest-date');
+      if (savedPlantingDate && savedHarvestDate) {
+        document.getElementById('planting-date').value = savedPlantingDate;
+        document.getElementById('harvest-date').value = savedHarvestDate;
+        checkHarvestDate(new Date(savedHarvestDate));
+      }
+
+      // Xử lý khi người dùng gửi form
+      plantForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const plantingDate = document.getElementById('planting-date').value;
+        const harvestDate = document.getElementById('harvest-date').value;
+        if (plantingDate && harvestDate) {
+          // Lưu ngày gieo trồng và ngày thu hoạch
+          localStorage.setItem('planting-date', plantingDate);
+          localStorage.setItem('harvest-date', harvestDate);
+          // Kiểm tra xem ngày thu hoạch đã đến chưa
+          checkHarvestDate(new Date(harvestDate));
+        }
+      });
+
+      // Hàm kiểm tra ngày thu hoạch
+      function checkHarvestDate(harvestDate) {
+        const currentDate = new Date();
+        const timeDifference = harvestDate - currentDate;
+        if (timeDifference <= 0) {
+          // Nếu ngày thu hoạch đã đến
+          harvestAlert.innerHTML = "<p>Cảnh báo: Ngày thu hoạch đã đến!</p>";
+          harvestAlert.style.display = "block";
+        } else {
+          // Nếu ngày thu hoạch chưa đến
+          harvestAlert.style.display = "none";
+        }
+      }
+    }
+  </script>
+
+  <!-- TAB 4: Chức năng khác ----------------------------------->
+  <div id="other" class="tab-content">
+    <div class="card">
+      <h2>Chức năng bổ sung (đang phát triển)</h2>
+      <p>Hiện hệ thống đang phát triển thêm...</p>
+    </div>
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab-btn');
+    const contents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabs.forEach(b => b.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      });
+    });
+  </script>
+  <footer>
+    <p>© 2025 Smart Farm - QUÁCH VĂN KỲ 23661032 / LÊ VĂN NGUỒN 23661034</p>
+  </footer>
+  
+  <!-- Kết nối Firebase -->
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-database.js"></script>
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-analytics.js"></script>
+  
+  <script>
+    // Firebase cấu hình
+    var firebaseConfig = {
+      apiKey: "AIzaSyBaZgHe9UKU5Qe6FBgsW0VPmNHX028jzmU",
+      authDomain: "smartfam-9256d.firebaseapp.com",
+      databaseURL: "https://smartfam-9256d-default-rtdb.firebaseio.com",
+      projectId: "smartfam-9256d",
+      storageBucket: "smartfam-9256d.firebasestorage.app",
+      messagingSenderId: "1020077202687",
+      appId: "1:1020077202687:web:d27398e5fa0f1f609b00ca",
+      measurementId: "G-1LXSHL9HDZ"
+    };
+    // Khởi tạo Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    // Lấy phần tử DOM
+    var nhietdo = document.getElementById('nhietdo-value');
+    var doam = document.getElementById('doam-value');
+    var anhsang = document.getElementById('anhsang-value');
+    var doamdat = document.getElementById('doamdat-value');
+    // Đọc dữ liệu từ Firebase
+    var dbRef = firebase.database().ref().child('cam_bien/nhietdo');  
+    var dbRef2 = firebase.database().ref('cam_bien/doamkk');
+    var dbRef3 = firebase.database().ref('cam_bien/anhsang');
+    var dbRef4 = firebase.database().ref('cam_bien/doamdat');
+    dbRef.on('value', snap => nhietdo.innerText = snap.val() + " °C");
+    dbRef2.on('value', snap => doam.innerText = snap.val() + " %");
+    dbRef3.on('value', snap => anhsang.innerText = snap.val()+ " lux");
+    dbRef4.on('value', snap => doamdat.innerText = snap.val() + " %"); 
+
+    //----- CẬP NHẬT TRẠNG THÁI THIẾT BỊ TỪ FIREBASE ------------------------------------
+    function updateUIFromFirebase(img, btnOn, btnOff, imgOnSrc, imgOffSrc, value) {
+    if (value === 1) {
+      img.src = imgOnSrc;
+      btnOn.classList.add('active-on');
+      btnOff.classList.remove('active-on', 'active-off');
+    } else {
+      img.src = imgOffSrc;
+      btnOff.classList.add('active-off');
+      btnOn.classList.remove('active-on', 'active-off');
+    }}
+
+    // ======== BƠM ========================
+    firebase.database().ref("thietbi1/bom").on('value', snapshot => {
+      const value = snapshot.val();
+      updateUIFromFirebase(imgpum, btn1, btn2, 'img/pumpon1.png', 'img/pump.png', value);
+    });
+
+    // ======== PHUN SƯƠNG ==================
+    firebase.database().ref("thietbi2/phun_suong").on('value', snapshot => {
+      const value = snapshot.val();
+      updateUIFromFirebase(imgmist, btn3, btn4, 'img/miston.png', 'img/mist.png', value);
+    });
+
+    // ======== VAN XẢ ======================
+    firebase.database().ref("thietbi3/van_xa").on('value', snapshot => {
+      const value = snapshot.val();
+      updateUIFromFirebase(imgvalve, btn5, btn6, 'img/valveon.png', 'img/valve.png', value);
+    });
+
+    // ======== ĐÈN =========================
+    firebase.database().ref("thietbi4/den").on('value', snapshot => {
+      const value = snapshot.val();
+      updateUIFromFirebase(imglight, btn7, btn8, 'img/denon.png', 'img/den.png', value);
+    });
+
+    // ======== QUẠT ========================
+    firebase.database().ref("thietbi5/quat").on('value', snapshot => {
+      const value = snapshot.val();
+      updateUIFromFirebase(imgfan, btn9, btn10, 'img/fanon.png', 'img/fan.png', value);
+    });
+
+     // ======== valve2 ========================
+     firebase.database().ref("thietbi6/valve_watering").on('value', snapshot => {
+      const value = snapshot.val();
+      updateUIFromFirebase(imgvalve2, btn11, btn12, 'img/valve2on.png', 'img/valve2.png', value);
+    });
+
+    // ===============ĐỌC TRẠNG THÁI BẬT/ TẮT CÁC THIẾT BỊ===========================
+    
+    // DOM phần tử hiển thị trạng thái thiết bị
+    const statusPump = document.getElementById('status-pump');
+    const statusMist = document.getElementById('status-mist');
+    const statusValve = document.getElementById('status-valve');
+    const statusLight = document.getElementById('status-light');
+    const statusFan = document.getElementById('status-fan');
+    const statusvalve2 = document.getElementById('status-valve2');
+
+
+    // Ghi nhận trạng thái các thiết bị từ Firebase và cập nhật giao diện
+    firebase.database().ref("thietbi1/bom").on('value', snapshot => {
+      const value = snapshot.val();
+      statusPump.innerText = value === 1 ? "BẬT" : "TẮT";
+    });
+
+    firebase.database().ref("thietbi2/phun_suong").on('value', snapshot => {
+      const value = snapshot.val();
+      statusMist.innerText = value === 1 ? "BẬT" : "TẮT";
+    });
+
+    firebase.database().ref("thietbi3/van_xa").on('value', snapshot => {
+      const value = snapshot.val();
+      statusValve.innerText = value === 1 ? "BẬT" : "TẮT";
+    });
+
+    firebase.database().ref("thietbi4/den").on('value', snapshot => {
+      const value = snapshot.val();
+      statusLight.innerText = value === 1 ? "BẬT" : "TẮT";
+    });
+
+    firebase.database().ref("thietbi5/quat").on('value', snapshot => {
+      const value = snapshot.val();
+      statusFan.innerText = value === 1 ? "BẬT" : "TẮT";
+    }); 
+
+
+    firebase.database().ref("thietbi6/valve_watering").on('value', snapshot => {
+      const value = snapshot.val();
+      statusvalve2.innerText = value === 1 ? "BẬT" : "TẮT";
+    });
+
+    // ============ AUTO BUTTON ==============================
+    firebase.database().ref("autoBtn").on("value", (snapshot) => {
+      const value = snapshot.val();
+      if (value === 1) {
+        btn.classList.add("on");
+        btn.classList.remove("off");
+        btn.textContent = "ON";
+      } else {
+        btn.classList.remove("on");
+        btn.classList.add("off");
+        btn.textContent = "OFF";
+      }
+    });
+  </script>
+
+  <script src="function.js"></script>
+
+</body>
+</html>
