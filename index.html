@@ -41,7 +41,7 @@
       <p style="margin-top:30px; text-align: center; font-size: 19px;">
         🌡️ Nhiệt độ: <strong id="nhietdo-value">-- °C</strong>
         &nbsp;&nbsp;&nbsp;&nbsp; 💦 Độ ẩm không khí: <strong id="doam-value">-- %</strong>
-        &nbsp;&nbsp;&nbsp;&nbsp; 🔅 Ánh sáng: <strong id="anhsang-value">-- lux</strong>
+        &nbsp;&nbsp;&nbsp;&nbsp; 🔅 Ánh sáng: <strong id="anhsang-value">-- %</strong>
         &nbsp;&nbsp;&nbsp;&nbsp; 💦 Độ ẩm đất: <strong id="doamdat-value">-- %</strong>
       </p>
     </div>
@@ -430,7 +430,7 @@
     var dbRef4 = firebase.database().ref('cam_bien/doamdat');
     dbRef.on('value', snap => nhietdo.innerText = snap.val() + " °C");
     dbRef2.on('value', snap => doam.innerText = snap.val() + " %");
-    dbRef3.on('value', snap => anhsang.innerText = snap.val()+ " lux");
+    dbRef3.on('value', snap => anhsang.innerText = snap.val()+ " %");
     dbRef4.on('value', snap => doamdat.innerText = snap.val() + " %"); 
 
     //----- CẬP NHẬT TRẠNG THÁI THIẾT BỊ TỪ FIREBASE ------------------------------------
