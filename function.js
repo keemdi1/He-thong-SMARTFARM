@@ -184,3 +184,96 @@ btn12.addEventListener('click', () => {
   btn12.classList.remove('active-on');
   firebase.database().ref("thietbi6").set({ valve_watering: 0 });
 });
+
+// chọn cây trồng
+function openPopup() {
+      document.getElementById("plantPopup").style.display = "block";
+    }
+
+    function closePopup() {
+      document.getElementById("plantPopup").style.display = "none";
+    }
+
+    const plantData = {
+      "Cây cải thìa": {
+        image: "img/thia.png",
+        time: "28 - 35 ngày",
+        description: "Cải thìa là loại rau giàu dinh dưỡng, giàu vitamin A, C, K và chất xơ, tốt cho miễn dịch và tiêu hóa...",
+        conditions: `
+          <ul>
+            <li><strong>Nhiệt độ lý tưởng:</strong> 18°C – 24°C (Chịu được 13°C đến 28°C; nhiệt độ cao dễ gây hiện tượng ra hoa sớm)</li>
+            <li><strong>Độ ẩm đất:</strong> 60% – 75% </li>
+            <li><strong>Độ ẩm không khí:</strong> 50% – 70%</li>
+            <li><strong>Chiếu sáng:</strong> 6 – 8 giờ/ngày (ánh sáng tán xạ hoặc nắng nhẹ)</li>
+          </ul>
+        `
+      },
+
+      "Cây xà lách": {
+        image: "img/xalach.png",
+        time: "35 - 40 ngày",
+        description: "Xà lách là loại rau ăn sống phổ biến, giúp giảm viêm nhiễm, ngừa bệnh mãn tính, bảo vệ mắt, đặc biệt là võng mạc,...",
+        conditions: `
+          <ul>
+            <li><strong>Nhiệt độ lý tưởng:</strong> 18°C – 24°C (Chịu được 13°C đến 28°C)</li>
+            <li><strong>Độ ẩm đất:</strong> 65% – 75%</li>
+            <li><strong>Độ ẩm không khí:</strong> 50% – 70%</li>
+            <li><strong>Chiếu sáng:</strong> 4 – 6 giờ/ngày (Ưa nắng nhẹ)</li>
+          </ul>
+        `
+      },
+
+      "Cải bẹ xanh": {
+      image: "img/bexanh.png",
+      time: "30 - 45 ngày",
+      description: "Cải bẹ xanh giúp thanh nhiệt, mát gan, giảm nóng trong cơ thể, tốt cho hệ tiêu hóa, giàu vitamin...",
+      conditions: `
+        <ul>
+          <li><strong>Nhiệt độ lý tưởng:</strong> 22°C – 28°C (chấp nhận 20°C – 32°C)</li>
+          <li><strong>Độ ẩm đất:</strong> 65% – 80%</li>
+          <li><strong>Độ ẩm không khí:</strong> 70% – 85%</li>
+          <li><strong>Chiếu sáng:</strong> 4 – 6 giờ/ngày (ánh sáng tán xạ hoặc nắng nhẹ)</li>
+        </ul>
+      `
+      },
+
+      "Cây cải ngọt": {
+        image: "img/ngot.png",
+        time: "25 – 40 ngày",
+        description: "Cải ngọt là loại rau tốt cho người bị gout, bảo vệ gan, giàu canxi, ngăn ngừa loãng xương, phòng ngừa ung thư...",
+        conditions: `
+          <ul>
+            <li><strong>Nhiệt độ lý tưởng:</strong> 20°C – 28°C (chịu được 18°C – 32°C)</li>
+            <li><strong>Độ ẩm đất:</strong> 60% – 75%</li>
+            <li><strong>Độ ẩm không khí:</strong> 70% – 80%</li>
+            <li><strong>Chiếu sáng:</strong> 4 – 6 giờ/ngày (ánh sáng tán xạ hoặc nắng nhẹ)</li>
+          </ul>
+        `
+      }
+    };
+
+    function selectPlantByName(name) {
+      const plant = plantData[name];
+      if (!plant) return;
+
+      // Đổi ảnh chính
+      document.getElementById("mainImage").src = plant.image;
+
+      // Cập nhật thông tin
+      document.getElementById("plant-name").innerText = name;
+      document.getElementById("harvest-time").innerText = plant.time;
+      document.getElementById("plant-description").innerText = plant.description;
+
+      // Cập nhật điều kiện sinh trưởng nếu có
+      document.getElementById("plant-conditions").innerHTML = plant.conditions || "";
+
+      // Lưu vào localStorage
+      localStorage.setItem("selected-plant-name", name);
+      localStorage.setItem("selected-plant-image", plant.image);
+      localStorage.setItem("selected-plant-time", plant.time);
+      localStorage.setItem("selected-plant-description", plant.description);
+      localStorage.setItem("selected-plant-conditions", plant.conditions || "");
+
+      // Đóng popup
+      closePopup();
+    }
