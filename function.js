@@ -252,28 +252,34 @@ function openPopup() {
       }
     };
 
-    function selectPlantByName(name) {
-      const plant = plantData[name];
-      if (!plant) return;
+function selectPlantByName(name){
+    const plant = plantData[name];
+    if(!plant) return;
 
-      // Đổi ảnh chính
-      document.getElementById("mainImage").src = plant.image;
+    document.getElementById("mainImage").src = plant.image;
+    document.getElementById("plant-name").innerText = name;
+    document.getElementById("harvest-time").innerText = plant.time;
+    document.getElementById("plant-description").innerText = plant.description;
+    document.getElementById("plant-conditions").innerHTML = plant.conditions || "";
 
-      // Cập nhật thông tin
-      document.getElementById("plant-name").innerText = name;
-      document.getElementById("harvest-time").innerText = plant.time;
-      document.getElementById("plant-description").innerText = plant.description;
+    localStorage.setItem("selected-plant-name", name);
+    localStorage.setItem("selected-plant-image", plant.image);
+    localStorage.setItem("selected-plant-time", plant.time);
+    localStorage.setItem("selected-plant-description", plant.description);
+    localStorage.setItem("selected-plant-conditions", plant.conditions || "");
 
-      // Cập nhật điều kiện sinh trưởng nếu có
-      document.getElementById("plant-conditions").innerHTML = plant.conditions || "";
+    // **đóng popup ngay khi chọn cây**
+    closePopup();
+}
 
-      // Lưu vào localStorage
-      localStorage.setItem("selected-plant-name", name);
-      localStorage.setItem("selected-plant-image", plant.image);
-      localStorage.setItem("selected-plant-time", plant.time);
-      localStorage.setItem("selected-plant-description", plant.description);
-      localStorage.setItem("selected-plant-conditions", plant.conditions || "");
+// Đóng popup khi click ra ngoài
+window.addEventListener('click', function(event){
+    const popup = document.getElementById("plantPopup");
+    const content = document.querySelector(".pop-content");
+    const mainImage = document.getElementById("mainImage");
 
-      // **Đóng popup ngay khi chọn cây**
-      closePopup();
+    if(popup.style.display === "block" && !content.contains(event.target) && event.target !== mainImage){
+        closePopup();
     }
+});
+
