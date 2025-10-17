@@ -3,47 +3,339 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
   <title>Hệ thống Smartfarm IoT</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+      .menu-toggle {
+        display: none;
+        font-size: 28px;
+        position: absolute;
+        top: 41px;  
+        right: -2px;
+        cursor: pointer;
+        color: white;
+        z-index: 1000;
+        text-align: center; /* căn giữa chữ bên dưới */
+      }
+
+      .menu-toggle .menu-label {
+        font-size: 12px;      /* chữ nhỏ hơn icon */
+        color: white;
+        margin-top: 2px;      /* khoảng cách giữa icon và chữ */
+      }
+
+
+   .header-container {
+    position: relative; /* để logo absolute dựa vào đây */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 10px;
+}
+
+      /* Kích thước mặc định trên PC */
+      .header-container h1 {
+        font-size: 26px;
+        margin: 0;
+      }
+    
+    .header-text h1 {
+      font-size: 24px;
+      margin: 0;
+      line-height: 1.3;
+      color: white;
+    }
+
+    .header-text p {
+      margin: 4px 0 0 0;
+      font-size: 15px;
+      color: white;
+    }
+
+    /* PC hiển thị ngang và có khoảng cách */
+    .info-mobile {
+      text-align: center;
+      font-size: 22px;
+      margin-top: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 50px;   /* tạo khoảng cách giữa các nhóm */
+    }
+
+    @media screen and (max-width: 768px) {
+
+      header {
+        padding: 25px 10px;
+      }
+      
+    .header-container h1 {
+        font-size: 20px; /* chữ nhỏ hơn trên mobile */
+        margin-left: 200px;
+      }
+
+      .header-container p {
+        font-size: 14px; /* chữ mô tả nhỏ hơn */
+        margin-left: -20px; 
+      }
+
+      .header-container > div > img.logo { 
+          width: 33px;      
+          height: auto;     
+          position: absolute; 
+          top: 46px;        
+          left: -2px;        
+          margin: 0;         
+      }
+
+
+      #status {
+        transform: scale(1);
+        transform-origin: top center;
+      }
+
+        /* Chỉ áp dụng cho Tab 1 */
+      #status .status-box {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* 2 cột trên mobile */
+        gap: 12px;
+        font-size: 15px;
+      }
+
+      #status .status-box div {
+        background: #e8f5e9;
+        border: 1px solid #c8e6c9;
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+        font-weight: bold;
+        display: flex;
+        flex-direction: column; /* icon trên, chữ dưới */
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      }
+
+      #status .status-box img {
+        width: 36px;
+        height: 36px;
+        margin-bottom: 5px;
+      }
+
+      /* Info cảm biến: cũng chia 2 cột */
+      #status .info-mobile {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 20px;
+        font-size: 15px;
+        text-align: center;
+      }
+
+      #status .info-mobile div {
+        background: #f1f8e9;
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.08);}
+
+
+      #status .card {
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 13px;
+      }
+
+      #status .card img {
+        width: 38px;
+      }
+
+      #status .status-box div {
+        padding: 6px 10px;
+      }
+
+      .info-mobile strong {
+        display: inline;
+      }
+
+      .info-mobile {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          font-size: 16px;
+          gap: 10px;
+          margin-left: 10px;
+        }
+
+      nav {
+        flex-direction: column;
+        display: none;
+      }
+
+      nav.show {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .tab-content {
+        padding: 10px;
+      }
+
+      body {
+        font-size: 14px;
+      }
+
+        .control-box {
+        gap: 10px;         /* Giảm khoảng cách giữa các khối */
+        padding: 0 10px;   /* Thu hẹp lề trong */
+      }
+
+      .device-control {
+        width: 110px;           /* Giảm chiều rộng */
+        padding: 12px;          /* Giảm padding */
+      }
+
+      .device-control img {
+        width: 45px;            /* Giảm kích thước hình ảnh */
+      }
+
+      .device-control h3 {
+        font-size: 15px;        /* Nhỏ chữ tên thiết bị */
+      }
+
+      .device-control .btn-group button {
+        font-size: 13px;
+        padding: 6px 10px;
+      }
+
+      .plant-detail {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .plant-detail img {
+        width: 160px;
+      }
+
+      .plant-info {
+        margin-top: -35px;
+        margin-left: 10px;
+        font-size: 15px;
+      }
+
+      .pop-content {
+        margin: 120px auto 0 auto;
+        width: 70%;          /* Giảm chiều rộng popup */
+        padding: 20px 10px 3px 10px;
+      }
+
+      .plant-item {
+        width: 45%;          /* Hai cây giống trên 1 hàng */
+      }
+
+      .plant-item img {
+        width: 85%;         /* Hình ảnh đầy phần item */
+        height: auto;        /* Giữ tỉ lệ ảnh */
+      }
+
+      /* Hiển thị popup */
+      .auto-popup {
+        display: flex;
+        align-items: center;
+        position: fixed;
+        top: 6%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fef3c7;
+        color: #92400e;
+        width: 280px;
+        height: 1px;
+        padding: 30px;
+        border: 2px solid #facc15;
+        border-radius: 10px;
+        z-index: 9999;
+        animation: fadeIn 0.3s ease-in-out;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .hidden {
+        display: none;
+      }
+    }
+  </style>
 </head>
 
 <body>
   <header>
+    <div class="header-container">
     <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
       <img src="img/logo.png" alt="Logo" class="logo">
       <div>
-        <h1 style="font-size: 26px; margin: 0;">🌿 Hệ Thống Giám Sát Nông Trại IoT</h1>
+        <h1 style="margin: 0;">Hệ Thống Giám Sát Nông Trại IoT</h1>
         <p style="margin: 0; margin: 10px auto 0 auto;">Quản lý - Điều khiển - Quan sát từ xa</p>
       </div>
     </div>
+      <div class="menu-toggle" onclick="toggleMenu()">
+        ☰
+        <div class="menu-label">Mở rộng</div>
+      </div>
+
+    </div>
   </header>
 
-  <nav>
+
+  <script>
+    function toggleMenu() {
+      document.querySelector('nav').classList.toggle('show');
+    }
+  </script>
+
+  <nav id="navbar">
     <button class="tab-btn active" data-tab="status">Trạng thái thiết bị</button>
     <button class="tab-btn" data-tab="control">Điều khiển thiết bị</button>
     <button class="tab-btn" data-tab="nursery">Cây giống</button>
     <button class="tab-btn" data-tab="other">Chức năng khác</button>
   </nav>
+  </header>
 
-  <!-- TAB 1: Trạng thái thiết bị -->
+  <!----------------- TAB 1: Trạng thái thiết bị ------------------------------------------------->
+
   <div id="status" class="tab-content active">
     <div class="card">
       <h2>Thiết bị đang hoạt động</h2>
-      <div class="status-box">
+      <div class="status-box" style= "font-size: 18px;">
         <div><img src="img/pumpbg.png" alt="Bơm"> Bơm: <span id="status-pump">--</span></div>
         <div><img src="img/mistbg.png" alt="Phun sương"> Phun sương: <span id="status-mist">--</span></div>
         <div><img src="img/valvebg.png" alt="Van xả"> Van xả: <span id="status-valve">--</span></div>
         <div><img src="img/denbg.png" alt="Đèn"> Đèn: <span id="status-light">--</span></div>
         <div><img src="img/fanbg.png" alt="Quạt"> Quạt: <span id="status-fan">--</span></div>
-        <div><img src="img/valvebg2.png" alt="Van bơm"> Van Bơm: <span id="status-valve2">--</span></div>
+        <div><img src="img/valvebg2.png" alt="Van bơm"> Van Tưới: <span id="status-valve2">--</span></div>
       </div>
       
-      <p style="margin-top:30px; text-align: center; font-size: 19px;">
-        🌡️ Nhiệt độ: <strong id="nhietdo-value">-- °C</strong>
-        &nbsp;&nbsp;&nbsp;&nbsp; 💦 Độ ẩm không khí: <strong id="doam-value">-- %</strong>
-        &nbsp;&nbsp;&nbsp;&nbsp; 🔅 Ánh sáng: <strong id="anhsang-value">-- %</strong>
-        &nbsp;&nbsp;&nbsp;&nbsp; 💦 Độ ẩm đất: <strong id="doamdat-value">-- %</strong>
-      </p>
+          <div class="info-mobile" style="margin-top:30px; text-align:center; font-size:19px;">
+        <div>
+          🌡️ Nhiệt độ:
+          <strong id="nhietdo-value" style="display:block; margin-top:6px; font-size:24px;">-- °C</strong>
+        </div>
+        <div>
+          💦 Độ ẩm không khí:
+          <strong id="doam-value" style="display:block; margin-top:6px; font-size:24px;">-- %</strong>
+        </div>
+        <div>
+          🔅 Ánh sáng:
+          <strong id="anhsang-value" style="display:block; margin-top:6px; font-size:24px;">-- %</strong>
+        </div>
+        <div>
+          💦 Độ ẩm đất:
+          <strong id="doamdat-value" style="display:block; margin-top:6px; font-size:24px;">-- %</strong>
+        </div>
+      </div>
+
     </div>
     <!-- Popup cảnh báo AUTO -->
     <div id="autoPopup" class="auto-popup hidden">
@@ -53,7 +345,8 @@
     </div>
   </div>
 
-  <!-- TAB 2: Điều khiển thiết bị -->
+  <!--------------- TAB 2: Điều khiển thiết bị -------------------------------------------------->
+
   <div id="control" class="tab-content">
     <div class="card">
       <h2>Điều khiển thiết bị</h2>
@@ -142,7 +435,10 @@
       <h2>Các loại cây giống:</h2>
       <!-- Ảnh chính sẽ được đổi sau khi chọn -->
       <div class="plant-detail">
-        <img id="mainImage" src="img/tree.png" alt="Cây giống" onclick="openPopup()" style="cursor: pointer;" />
+        <div style="text-align: center;">
+          <img id="mainImage" src="img/tree.png" alt="Cây giống" onclick="openPopup()" style="cursor: pointer;" />
+          <p style="margin-top:18px">📸 Hình ảnh cập nhật lúc <span id="timestamp">--:-- --/--/----</span></p>
+        </div>
         <div class="plant-info">
           <h2 id="plant-name">Tên cây</h2>
           <p><strong>Thời gian thu hoạch:</strong> <span id="harvest-time">- -</span></p>
@@ -150,7 +446,6 @@
           <div id="plant-conditions"></div>
         </div>
       </div>
-      <p style="margin-top:10px">📸 Hình ảnh cập nhật lúc <span id="timestamp">--:-- --/--/----</span></p>
 
       <!-- Popup chọn cây -->
       <div id="plantPopup" class="pop">
@@ -187,7 +482,7 @@
       </div>
 
       <!-- Form nhập ngày gieo trồng và ngày thu hoạch -->
-      <h3>Chọn ngày gieo trồng và ngày thu hoạch</h3>
+      <h3 style="font-size: 24px;">Chọn ngày gieo trồng và ngày thu hoạch</h3>
       <form id="plant-form">
         <label for="planting-date">Ngày gieo trồng:</label>
         <input type="date" id="planting-date" required><br><br>
@@ -203,101 +498,7 @@
     </div>
   </div>
 
-  <script>
-    function openPopup() {
-      document.getElementById("plantPopup").style.display = "block";
-    }
-
-    function closePopup() {
-      document.getElementById("plantPopup").style.display = "none";
-    }
-
-    const plantData = {
-      "Cây cải thìa": {
-        image: "img/thia.png",
-        time: "28 - 35 ngày",
-        description: "Cải thìa là loại rau giàu dinh dưỡng, giàu vitamin A, C, K và chất xơ, tốt cho miễn dịch và tiêu hóa...",
-        conditions: `
-          <ul>
-            <li><strong>Nhiệt độ lý tưởng:</strong> 18°C – 24°C (Chịu được 13°C đến 28°C; nhiệt độ cao dễ gây hiện tượng ra hoa sớm)</li>
-            <li><strong>Độ ẩm đất:</strong> 60% – 75% </li>
-            <li><strong>Độ ẩm không khí:</strong> 50% – 70%</li>
-            <li><strong>Chiếu sáng:</strong> 6 – 8 giờ/ngày (ánh sáng tán xạ hoặc nắng nhẹ)</li>
-          </ul>
-        `
-      },
-
-      "Cây xà lách": {
-        image: "img/xalach.png",
-        time: "35 - 40 ngày",
-        description: "Xà lách là loại rau ăn sống phổ biến, giúp giảm viêm nhiễm, ngừa bệnh mãn tính, bảo vệ mắt, đặc biệt là võng mạc,...",
-        conditions: `
-          <ul>
-            <li><strong>Nhiệt độ lý tưởng:</strong> 18°C – 24°C (Chịu được 13°C đến 28°C)</li>
-            <li><strong>Độ ẩm đất:</strong> 65% – 75%</li>
-            <li><strong>Độ ẩm không khí:</strong> 50% – 70%</li>
-            <li><strong>Chiếu sáng:</strong> 4 – 6 giờ/ngày (Ưa nắng nhẹ)</li>
-          </ul>
-        `
-      },
-
-      "Cải bẹ xanh": {
-      image: "img/bexanh.png",
-      time: "30 - 45 ngày",
-      description: "Cải bẹ xanh giúp thanh nhiệt, mát gan, giảm nóng trong cơ thể, tốt cho hệ tiêu hóa, giàu vitamin...",
-      conditions: `
-        <ul>
-          <li><strong>Nhiệt độ lý tưởng:</strong> 22°C – 28°C (chấp nhận 20°C – 32°C)</li>
-          <li><strong>Độ ẩm đất:</strong> 65% – 80%</li>
-          <li><strong>Độ ẩm không khí:</strong> 70% – 85%</li>
-          <li><strong>Chiếu sáng:</strong> 4 – 6 giờ/ngày (ánh sáng tán xạ hoặc nắng nhẹ)</li>
-        </ul>
-      `
-      },
-
-      "Cây cải ngọt": {
-        image: "img/ngot.png",
-        time: "25 – 40 ngày",
-        description: "Cải ngọt là loại rau tốt cho người bị gout, bảo vệ gan, giàu canxi, ngăn ngừa loãng xương, phòng ngừa ung thư...",
-        conditions: `
-          <ul>
-            <li><strong>Nhiệt độ lý tưởng:</strong> 20°C – 28°C (chịu được 18°C – 32°C)</li>
-            <li><strong>Độ ẩm đất:</strong> 60% – 75%</li>
-            <li><strong>Độ ẩm không khí:</strong> 70% – 80%</li>
-            <li><strong>Chiếu sáng:</strong> 4 – 6 giờ/ngày (ánh sáng tán xạ hoặc nắng nhẹ)</li>
-          </ul>
-        `
-      }
-    };
-
-    function selectPlantByName(name) {
-      const plant = plantData[name];
-      if (!plant) return;
-
-      // Đổi ảnh chính
-      document.getElementById("mainImage").src = plant.image;
-
-      // Cập nhật thông tin
-      document.getElementById("plant-name").innerText = name;
-      document.getElementById("harvest-time").innerText = plant.time;
-      document.getElementById("plant-description").innerText = plant.description;
-
-      // Cập nhật điều kiện sinh trưởng nếu có
-      document.getElementById("plant-conditions").innerHTML = plant.conditions || "";
-
-      // Lưu vào localStorage
-      localStorage.setItem("selected-plant-name", name);
-      localStorage.setItem("selected-plant-image", plant.image);
-      localStorage.setItem("selected-plant-time", plant.time);
-      localStorage.setItem("selected-plant-description", plant.description);
-      localStorage.setItem("selected-plant-conditions", plant.conditions || "");
-
-
-      // Đóng popup
-      closePopup();
-    }
-  </script>
-
+  
   <script>
     window.onload = function() {
       
@@ -370,7 +571,8 @@
     }
   </script>
 
-  <!-- TAB 4: Chức năng khác ----------------------------------->
+  <!--------- TAB 4: Chức năng khác --------------------------------------------------------------->
+
   <div id="other" class="tab-content">
     <div class="card">
       <h2>Chức năng bổ sung (đang phát triển)</h2>
@@ -378,6 +580,7 @@
     </div>
   </div>
 
+  <!------- đổi màu nút nhấn -------------->
   <script>
     const tabs = document.querySelectorAll('.tab-btn');
     const contents = document.querySelectorAll('.tab-content');
@@ -388,9 +591,27 @@
         contents.forEach(c => c.classList.remove('active'));
         btn.classList.add('active');
         document.getElementById(btn.dataset.tab).classList.add('active');
+
+        // Ẩn menu sau khi chọn tab nếu đang ở mobile
+        if (window.innerWidth <= 768) {
+          document.getElementById('navbar').classList.remove('show');
+        }
       });
     });
+
+    const menuToggle = document.getElementById('menu-toggle');
+    const navbar = document.getElementById('navbar');
+
+    menuToggle.addEventListener('click', () => {
+      navbar.classList.toggle('show');
+    });
+
+    // Mặc định ẩn nav trên điện thoại
+    if (window.innerWidth <= 768) {
+      navbar.classList.remove('show');
+    }
   </script>
+
   <footer>
     <p>© 2025 Smart Farm - QUÁCH VĂN KỲ 23661032 / LÊ VĂN NGUỒN 23661034</p>
   </footer>
@@ -475,7 +696,7 @@
       updateUIFromFirebase(imgfan, btn9, btn10, 'img/fanon.png', 'img/fan.png', value);
     });
 
-     // ======== valve2 ========================
+     // ======== VAN BƠM ========================
      firebase.database().ref("thietbi6/valve_watering").on('value', snapshot => {
       const value = snapshot.val();
       updateUIFromFirebase(imgvalve2, btn11, btn12, 'img/valve2on.png', 'img/valve2.png', value);
@@ -493,36 +714,27 @@
 
 
     // Ghi nhận trạng thái các thiết bị từ Firebase và cập nhật giao diện
-    firebase.database().ref("thietbi1/bom").on('value', snapshot => {
-      const value = snapshot.val();
-      statusPump.innerText = value === 1 ? "BẬT" : "TẮT";
-    });
+    function capNhatTrangThaiDuLieu(duongDan, element) {
+      firebase.database().ref(duongDan).on('value', snapshot => {
+        const value = snapshot.val();
+        if (value === 1) {
+          element.innerText = "BẬT";
+          element.style.color = "blue";
+        } else {
+          element.innerText = "TẮT";
+          element.style.color = "red";
+        }
+      });
+    }
 
-    firebase.database().ref("thietbi2/phun_suong").on('value', snapshot => {
-      const value = snapshot.val();
-      statusMist.innerText = value === 1 ? "BẬT" : "TẮT";
-    });
+    // Gọi hàm cho từng thiết bị
+    capNhatTrangThaiDuLieu("thietbi1/bom", statusPump);
+    capNhatTrangThaiDuLieu("thietbi2/phun_suong", statusMist);
+    capNhatTrangThaiDuLieu("thietbi3/van_xa", statusValve);
+    capNhatTrangThaiDuLieu("thietbi4/den", statusLight);
+    capNhatTrangThaiDuLieu("thietbi5/quat", statusFan);
+    capNhatTrangThaiDuLieu("thietbi6/valve_watering", statusvalve2);
 
-    firebase.database().ref("thietbi3/van_xa").on('value', snapshot => {
-      const value = snapshot.val();
-      statusValve.innerText = value === 1 ? "BẬT" : "TẮT";
-    });
-
-    firebase.database().ref("thietbi4/den").on('value', snapshot => {
-      const value = snapshot.val();
-      statusLight.innerText = value === 1 ? "BẬT" : "TẮT";
-    });
-
-    firebase.database().ref("thietbi5/quat").on('value', snapshot => {
-      const value = snapshot.val();
-      statusFan.innerText = value === 1 ? "BẬT" : "TẮT";
-    }); 
-
-
-    firebase.database().ref("thietbi6/valve_watering").on('value', snapshot => {
-      const value = snapshot.val();
-      statusvalve2.innerText = value === 1 ? "BẬT" : "TẮT";
-    });
 
     // ============ AUTO BUTTON ==============================
     firebase.database().ref("autoBtn").on("value", (snapshot) => {
