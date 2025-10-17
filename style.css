@@ -10,9 +10,9 @@ header {
     padding: 20px;
     text-align: center;
 }
-  
+
 .logo {
-    width: 60px;
+    width: 50px;
     vertical-align: middle;
     margin-left: -60px; /* Dịch logo qua trái */
 }
@@ -69,7 +69,15 @@ nav button.active {
     object-fit: contain;
 }
 
-.status-box, .control-box {
+.control-box {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center; /* Thêm dòng này để căn giữa các khối */
+}
+
+
+.status-box {
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
@@ -149,19 +157,23 @@ nav button.active {
 
 /* Nội dung popup */
 .pop-content {
+  position: relative;
   background-color: #fff;
-  margin: 100px auto;
-  padding: 20px;
-  width: 60%;
+  margin: 200px auto 0 auto; /* Dịch xuống bằng cách tăng giá trị top */
+  padding: 20px 10px 3px 10px;
+  width: 50%;
   border-radius: 10px;
   text-align: center;
 }
 
 /* Nút đóng */
 .close {
-  float: right;
+  position: absolute;  /* Thêm dòng này để có thể dùng top/left */
+  top: 5px;             /* Đẩy lên trên */
+  right: 10px;          /* Đẩy sang trái một chút (giảm số này nếu muốn gần hơn) */
   font-size: 24px;
   cursor: pointer;
+  z-index: 10;          /* Đảm bảo nằm trên */
 }
 
 /* Các lựa chọn cây */
@@ -193,7 +205,8 @@ nav button.active {
 
 .plant-info {
   /* ví dụ chỉnh khoảng cách, font, màu... */
-  margin-top: -20px;
+  margin-top: -25px;
+  margin-left: -50px;
   font-size: 16px;
 }
 #plant-conditions ul {
@@ -303,8 +316,8 @@ nav button.active {
 .auto-popup {
   display: flex;
   align-items: center;
-  position: fixed;
-  top: 38%;
+  position: absolute; /* Thay fixed thành absolute */
+  top: 240px;         /* Khoảng cách từ đầu trang */
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fef3c7;
@@ -319,6 +332,7 @@ nav button.active {
   font-weight: bold;
   text-align: center;
 }
+
 
 .hidden {
   display: none;
