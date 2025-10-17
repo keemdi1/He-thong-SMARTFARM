@@ -274,6 +274,6 @@ function openPopup() {
       localStorage.setItem("selected-plant-description", plant.description);
       localStorage.setItem("selected-plant-conditions", plant.conditions || "");
 
-      // Đóng popup
+      // **Đóng popup ngay khi chọn cây**
       closePopup();
     }
