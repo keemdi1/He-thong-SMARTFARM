@@ -209,10 +209,10 @@ function openPopup() {
         `
       },
 
-      "Cây xà lách": {
+      "Cây xà lách son": {
         image: "img/xalach.png",
         time: "35 - 40 ngày",
-        description: "Xà lách là loại rau ăn sống phổ biến, giúp giảm viêm nhiễm, ngừa bệnh mãn tính, bảo vệ mắt, đặc biệt là võng mạc,...",
+        description: "Xà lách son là loại rau ăn sống phổ biến, giúp giảm viêm nhiễm, ngừa bệnh mãn tính, bảo vệ mắt, đặc biệt là võng mạc,...",
         conditions: `
           <ul>
             <li><strong>Nhiệt độ lý tưởng:</strong> 18°C – 24°C (Chịu được 13°C đến 28°C)</li>
@@ -277,3 +277,4 @@ function openPopup() {
       // Đóng popup
       closePopup();
     }
+
